@@ -1,9 +1,14 @@
 package com.yans.controllers;
 
+import java.util.Arrays;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -74,6 +79,31 @@ public class CategoryController {
         Category category = modelMapper.map(categoryData, Category.class);
         responseData.setStatus(true);
         responseData.setPayload(categoryService.save(category));
+        return ResponseEntity.ok(responseData);
+    }
+
+    @PostMapping("/search/{size}/{page}")
+    public Iterable<Category> findByName(@RequestBody CategoryData categoryData, @PathVariable("size") int size,
+            @PathVariable("page") int page) {
+        Pageable pageable = PageRequest.of(page, size);
+        return categoryService.findByName(categoryData.getKeyword(), pageable);
+    }
+
+    @PostMapping("/search/{size}/{page}/{sort}")
+    public Iterable<Category> findByName(@RequestBody CategoryData categoryData, @PathVariable("size") int size,
+            @PathVariable("page") int page, @PathVariable("sort") String sort) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id"));
+        if (sort.equalsIgnoreCase("desc")) {
+            pageable = PageRequest.of(page, size, Sort.by("id").descending());
+        }
+        return categoryService.findByName(categoryData.getKeyword(), pageable);
+    }
+
+    @PostMapping("/save_batch")
+    public ResponseEntity<ResponseData<Iterable<Category>>> createBatch(@RequestBody Category[] categories) {
+        ResponseData<Iterable<Category>> responseData = new ResponseData<>();
+        responseData.setPayload(categoryService.saveBatch(Arrays.asList(categories)));
+        responseData.setStatus(true);
         return ResponseEntity.ok(responseData);
     }
 

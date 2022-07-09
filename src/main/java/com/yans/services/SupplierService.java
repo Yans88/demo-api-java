@@ -1,5 +1,6 @@
 package com.yans.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -37,4 +38,19 @@ public class SupplierService {
         supplierRepo.deleteById(id);
     }
 
+    public Supplier findbByEmail(String email) {
+        return supplierRepo.findByEmail(email);
+    }
+
+    public List<Supplier> findByName(String name) {
+        return supplierRepo.findByNameContainsOrderByIdAsc(name);
+    }
+
+    public List<Supplier> findByNameStartWith(String prefix) {
+        return supplierRepo.findByNameStartingWith(prefix);
+    }
+
+    public List<Supplier> findByNameOrEmailContains(String keyword) {
+        return supplierRepo.findByNameContainsOrEmailContains(keyword, keyword);
+    }
 }

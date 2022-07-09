@@ -1,5 +1,7 @@
 package com.yans.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
@@ -87,5 +89,25 @@ public class SupplierController {
         responseData.setStatus(true);
         responseData.setPayload(supplierService.save(supplier));
         return ResponseEntity.ok(responseData);
+    }
+
+    @PostMapping("/search_email")
+    public Supplier findByEmail(@RequestBody SupplierData supplierData) {
+        return supplierService.findbByEmail(supplierData.getKeyword());
+    }
+
+    @PostMapping("/search_name")
+    public List<Supplier> findByName(@RequestBody SupplierData supplierData) {
+        return supplierService.findByName(supplierData.getKeyword());
+    }
+
+    @PostMapping("/search_name_with")
+    public List<Supplier> findByNameStartWith(@RequestBody SupplierData supplierData) {
+        return supplierService.findByNameStartWith(supplierData.getKeyword());
+    }
+
+    @PostMapping("/search_name_email")
+    public List<Supplier> findByNameOrEmail(@RequestBody SupplierData supplierData) {
+        return supplierService.findByNameOrEmailContains(supplierData.getKeyword());
     }
 }

@@ -5,6 +5,8 @@ import javax.validation.constraints.NotEmpty;
 
 public class SupplierData {
 
+    private String keyword;
+
     @NotEmpty(message = "Name is required")
     private String name;
 
@@ -17,6 +19,14 @@ public class SupplierData {
 
     public String getName() {
         return name;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
     public void setName(String name) {

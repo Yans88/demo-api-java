@@ -1,5 +1,7 @@
 package com.yans.controllers;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.yans.dto.ProductData;
 import com.yans.dto.ResponseData;
 import com.yans.models.entities.Product;
 import com.yans.models.entities.Supplier;
@@ -61,6 +64,26 @@ public class ProductController {
     @PostMapping("/{id}")
     public void addSupplier(@RequestBody Supplier supplier, @PathVariable("id") Long productId) {
         productService.addSupplier(supplier, productId);
+    }
+
+    @PostMapping("/search")
+    public Product geProductByName(@RequestBody ProductData productData) {
+        return productService.findProductByname(productData.getKeyword());
+    }
+
+    @PostMapping("/search_like")
+    public List<Product> geProductByNameLike(@RequestBody ProductData productData) {
+        return productService.findProductByLikeName(productData.getKeyword());
+    }
+
+    @GetMapping("/search_category/{categoryId}")
+    public List<Product> geProductByCategory(@PathVariable("categoryId") Long categoryId) {
+        return productService.findProductByCategory(categoryId);
+    }
+
+    @GetMapping("/search_supplier/{supplierId}")
+    public List<Product> geProductBySupplier(@PathVariable("supplierId") Long supplierId) {
+        return productService.findProductBySupplier(supplierId);
     }
 
 }

@@ -4,6 +4,8 @@ import javax.validation.constraints.NotEmpty;
 
 public class CategoryData {
 
+    private String keyword;
+
     @NotEmpty(message = "Name is required")
     private String name;
 
@@ -13,6 +15,14 @@ public class CategoryData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getKeyword() {
+        return keyword;
+    }
+
+    public void setKeyword(String keyword) {
+        this.keyword = keyword;
     }
 
 }
